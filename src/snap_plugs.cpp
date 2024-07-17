@@ -12,62 +12,52 @@
 
 K_PLUGIN_CLASS_WITH_JSON(SnapPermissions, "snap_kcm.json")
 
-void handleFetchedSnaps(QSnapdGetSnapsRequest* req, QList<QSnapdSnap*>& snaps)
-{
-    qDebug() << "Fetched the snaps....";
-    if(req) 
-    {
-        for (int i = 0; i < req->snapCount(); ++i) 
-        {
-            snaps.append(req->snap(i));
-        }
-    }
-}
-
-void handleFetchedConnections(QSnapdGetConnectionsRequest* req, QList<QSnapdPlug*>& plugs, QList<QSnapdSlot*>& slots)
-{
-    qDebug() << "Fetched the connections....";
-    if (req) 
-    {
-        for (int i = 0; i < req->plugCount(); ++i) 
-        {
-            plugs.append(req->plug(i));
-        }
-        for (int i = 0; i < req->slotCount(); ++i)
-        {
-            slots.append(req->slot(i));
-        }
-    }
-}
-
 SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
     : KQuickConfigModule{ parent, data },
-    m_client{ new QSnapdClient }
+    m_client{ this }
 {
-    constexpr const char *uri = "org.kde.plasma.kcm.snappermissions";
-    qmlRegisterType<SnapPermissions>(uri, 1, 0, "SnapPermissions");
+    //Initalize locals
+    qmlRegisterType<SnapPermissions>("org.kde.plasma.kcm.snappermissions", 1, 0, "SnapPermissions");
     QList<QSnapdSnap*> loadedSnaps;
     QList<QSnapdPlug*> loadedPlugs;
     QList<QSnapdSlot*> loadedSlots;
-    QSnapdGetSnapsRequest* reqGetSnaps{ m_client->getSnaps() };
-    QSnapdGetConnectionsRequest* reqGetConnections{ m_client->getConnections() };
-    reqGetSnaps->runSync();
-    handleFetchedSnaps(reqGetSnaps, loadedSnaps);
-    reqGetConnections->runSync();
-    handleFetchedConnections(reqGetConnections, loadedPlugs, loadedSlots);
-    qDebug() << "Setting Snap";
+    QSnapdGetSnapsRequest* reqGetSnaps{ m_client.getSnaps() };
+    QSnapdGetConnectionsRequest* reqGetConnections{ m_client.getConnections() };
+    //Fetch snaps
+    if(reqGetSnaps) 
+    {
+        reqGetSnaps->runSync();
+        for (int i = 0; i < reqGetSnaps->snapCount(); ++i) 
+        {
+            loadedSnaps.append(reqGetSnaps->snap(i));
+        }
+    }
+    //Fetch connections
+    if (reqGetConnections) 
+    {
+        reqGetConnections->runSync();
+        for (int i = 0; i < reqGetConnections->plugCount(); ++i) 
+        {
+            loadedPlugs.append(reqGetConnections->plug(i));
+        }
+        for (int i = 0; i < reqGetConnections->slotCount(); ++i)
+        {
+            loadedSlots.append(reqGetConnections->slot(i));
+        }
+    }
+    //Get snaps and their associated plugs and slots
     for (QSnapdSnap* snap : loadedSnaps) 
     {
         QList<QSnapdPlug*> plugsForSnap;
         QList<QSnapdSlot*> slotsForSnap;
-        for (QSnapdPlug* plug : plugsForSnap)
+        for (QSnapdPlug* plug : loadedPlugs)
         {
             if (plug->snap() == snap->name()) 
             {
                 plugsForSnap.append(plug);
             }
         }
-        for (QSnapdSlot* slot : slotsForSnap) 
+        for (QSnapdSlot* slot : loadedSlots) 
         {
             if (slot->snap() == snap->name()) 
             {
@@ -81,8 +71,9 @@ SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
 
 const QList<KCMSnap>& SnapPermissions::snaps() const
 {
-    for (auto temp : m_snaps) {
-        qDebug() << temp.snap()->name();
+    for (const KCMSnap& snap : m_snaps) 
+    {
+        qDebug() << snap.snap()->name();
     }
     return m_snaps;
 }

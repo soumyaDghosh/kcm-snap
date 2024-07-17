@@ -20,6 +20,6 @@ class SnapPermissions : public KQuickConfigModule
         Q_INVOKABLE const QList<KCMSnap>& snaps() const;
 
     private:
-        QSnapdClient* m_client;
+        QSnapdClient m_client;
         QList<KCMSnap> m_snaps;
 };
