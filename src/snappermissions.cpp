@@ -16,8 +16,8 @@ SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
     : KQuickConfigModule{ parent, data },
     m_client{ this }
 {
-    //Initalize locals
     qmlRegisterType<SnapPermissions>("org.kde.plasma.kcm.snappermissions", 1, 0, "SnapPermissions");
+    //Initalize locals
     QList<QSnapdSnap*> loadedSnaps;
     QList<QSnapdPlug*> loadedPlugs;
     QList<QSnapdSlot*> loadedSlots;
@@ -66,15 +66,15 @@ SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
         }
         m_snaps.append(KCMSnap{ snap, plugsForSnap, slotsForSnap });
     }
-    snaps();
-}
-
-const QList<KCMSnap>& SnapPermissions::snaps() const
-{
+    //Print results
     for (const KCMSnap& snap : m_snaps) 
     {
         qDebug() << snap.snap()->name();
     }
+}
+
+const QList<KCMSnap>& SnapPermissions::snaps() const
+{
     return m_snaps;
 }
 
