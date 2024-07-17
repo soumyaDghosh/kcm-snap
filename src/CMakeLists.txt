@@ -4,10 +4,10 @@
 
 kcmutils_add_qml_kcm(snap_kcm)
 target_sources(snap_kcm PRIVATE
-   snap_plugs.cpp
-   snap_plugs.h
-   kcm_snap.cpp
-   kcm_snap.h
+   snappermissions.cpp
+   snappermissions.h
+   kcmsnap.cpp
+   kcmsnap.h
 )
 target_link_libraries(snap_kcm PRIVATE
     Qt::Quick
