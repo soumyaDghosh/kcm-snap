@@ -13,7 +13,7 @@ import org.kde.plasma.kcm.snappermissions
 
 KCMUtils.ScrollViewKCM {
     id: root
-    required property SnapPermissions perm: SnapPermissions{};
+    required property SnapPermissions perm;
 
     title: i18n("Permissions")
     implicitWidth: Kirigami.Units.gridUnit * 15

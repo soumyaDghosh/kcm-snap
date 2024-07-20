@@ -78,4 +78,4 @@ const QList<KCMSnap>& SnapPermissions::snaps() const
     return m_snaps;
 }
 
-#include "snap_plugs.moc"
+#include "snappermissions.moc"

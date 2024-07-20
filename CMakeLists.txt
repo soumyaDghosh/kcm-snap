@@ -30,4 +30,4 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     I18n
 )
 
-add_subdirectory(temp)
+add_subdirectory(src)
