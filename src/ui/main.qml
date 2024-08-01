@@ -9,11 +9,11 @@ import QtQuick.Controls as Controls
 
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCMUtils
-import org.kde.plasma.kcm.snappermissions
+import org.kde.plasma.kcm.snappermissions 1.0
 
 KCMUtils.ScrollViewKCM {
     id: root
-    required property SnapPermissions perm;
+    required property SnapBackend perm
 
     title: i18n("Permissions")
     implicitWidth: Kirigami.Units.gridUnit * 15

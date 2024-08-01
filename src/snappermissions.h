@@ -8,8 +8,7 @@
 #include <QList>
 #include <QObject>
 #include <Snapd/Client>
-#include <qtmetamacros.h>
-#include "kcmsnap.h"
+#include "snapbackend.h"
 
 class SnapPermissions : public KQuickConfigModule
 {
@@ -17,9 +16,6 @@ class SnapPermissions : public KQuickConfigModule
 
     public:
         SnapPermissions(QObject *parent, const KPluginMetaData &data);
-        Q_INVOKABLE const QList<KCMSnap>& snaps() const;
-
     private:
-        QSnapdClient m_client;
-        QList<KCMSnap> m_snaps;
+        SnapBackend *const snap_model;
 };

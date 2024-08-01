@@ -8,6 +8,8 @@ target_sources(snap_kcm PRIVATE
    snappermissions.h
    kcmsnap.cpp
    kcmsnap.h
+   snapbackend.cpp
+   snapbackend.h
 )
 target_link_libraries(snap_kcm PRIVATE
     Qt::Quick
