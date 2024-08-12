@@ -1,6 +1,5 @@
 #include "snapbackend.h"
 #include <QtQml>
-#include <algorithm>
 
 SnapBackend::SnapBackend(QObject *parent){
     //Initalize locals
@@ -10,17 +9,20 @@ SnapBackend::SnapBackend(QObject *parent){
     QSnapdGetSnapsRequest* reqGetSnaps{ m_client.getSnaps() };
     QSnapdGetConnectionsRequest* reqGetConnections{ m_client.getConnections() };
 
+
     //Fetch snaps
     if(reqGetSnaps) 
     {
         reqGetSnaps->runSync();
         for (int i = 0; i < reqGetSnaps->snapCount(); ++i) 
         {
-            if (reqGetSnaps->snap(i)->appCount() != 0) {
+            if (reqGetSnaps->snap(i)->appCount() != 0 && reqGetSnaps->snap(i)->confinement() != QSnapdEnums::SnapConfinementClassic) {
                 loadedSnaps.append(reqGetSnaps->snap(i));
             }
         }
         std::sort(loadedSnaps.begin(), loadedSnaps.end(), SnapBackend::comparebyName);
+        
+        Q_EMIT snapsChanged();
     }
     //Fetch connections
     if (reqGetConnections) 
@@ -54,16 +56,16 @@ SnapBackend::SnapBackend(QObject *parent){
                 slotsForSnap.append(slot);
             }
         }
-        m_snaps.append(KCMSnap{ snap, plugsForSnap, slotsForSnap });
+        m_snaps.append(new KCMSnap(snap, plugsForSnap, slotsForSnap));
     }
     //Print results
-    for (const KCMSnap& snap : m_snaps) 
-    {
-        qDebug() << snap.snap()->name();
-    }
+    // for (const KCMSnap& snap : m_snaps) 
+    // {
+    //     qDebug() << snap.snap()->name();
+    // }
 }
 
-const QList<KCMSnap>& SnapBackend::snaps() const
+const QList<KCMSnap *> SnapBackend::snaps() const
 {
     return m_snaps;
 }

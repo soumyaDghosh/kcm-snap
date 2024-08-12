@@ -14,7 +14,7 @@ K_PLUGIN_CLASS_WITH_JSON(SnapPermissions, "snap_kcm.json")
 
 SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
     : KQuickConfigModule{ parent, data }
-    , snap_model(new SnapBackend(this))
+    , snap_model(new SnapBackend())
 {
     constexpr const char *uri = "org.kde.plasma.kcm.snappermissions";
     qmlRegisterType<SnapBackend>(uri, 1, 0, "SnapBackend");
