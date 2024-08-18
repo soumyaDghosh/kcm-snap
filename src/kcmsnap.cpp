@@ -12,12 +12,12 @@ QSnapdSnap* KCMSnap::snap() const
 }
 
 const QList<QSnapdPlug*> KCMSnap::plugs() const 
-{ 
+{
     return m_plugs; 
 }
  
 const QList<QSnapdSlot*> KCMSnap::slots() const 
-{ 
+{
     return m_slots; 
 }
 

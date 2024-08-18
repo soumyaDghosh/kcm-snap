@@ -70,6 +70,20 @@ const QList<KCMSnap *> SnapBackend::snaps() const
     return m_snaps;
 }
 
+void SnapBackend::connectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
+{
+    QSnapdClient client;
+    QSnapdConnectInterfaceRequest *req = client.connectInterface(plug_snap, plug_name, slot_snap, slot_name);
+    req->runSync();
+}
+
+void SnapBackend::disconnectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
+{
+    QSnapdClient client;
+    QSnapdDisconnectInterfaceRequest *req = client.disconnectInterface(plug_snap, plug_name, slot_snap, slot_name);
+    req->runSync();
+}
+
 bool SnapBackend::comparebyName(QSnapdSnap* a, QSnapdSnap* b) {
     return a->name() < b->name();
 }
