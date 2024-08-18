@@ -57,8 +57,6 @@ KCMUtils.ScrollViewKCM {
                     }
                 }
                 onClicked: {
-                    console.log(modelData.plugs)
-                    console.log(modelData.slots)
                     overlay.open()
                 }
                 Kirigami.OverlaySheet {
@@ -69,6 +67,7 @@ KCMUtils.ScrollViewKCM {
                         model: modelData.plugs
                         delegate: QQC2.ItemDelegate {
                             id: smallDelegate
+                            text: modelData.name
                         }
                     }
                 }
