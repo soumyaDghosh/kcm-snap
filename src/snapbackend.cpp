@@ -7,8 +7,7 @@ SnapBackend::SnapBackend(QObject *parent){
     QList<QSnapdPlug*> loadedPlugs;
     QList<QSnapdSlot*> loadedSlots;
     QSnapdGetSnapsRequest* reqGetSnaps{ m_client.getSnaps() };
-    QSnapdGetConnectionsRequest* reqGetConnections{ m_client.getConnections() };
-
+    QSnapdGetConnectionsRequest* reqGetConnections{ m_client.getConnections(QSnapdClient::GetConnectionsFlag::SelectAll) };
 
     //Fetch snaps
     if(reqGetSnaps) 
@@ -44,7 +43,7 @@ SnapBackend::SnapBackend(QObject *parent){
         QList<QSnapdSlot*> slotsForSnap;
         for (QSnapdPlug* plug : loadedPlugs)
         {
-            if (plug->snap() == snap->name()) 
+            if (plug->snap() == snap->name() && !(plug->hasAttribute(QStringLiteral("content"))))
             {
                 plugsForSnap.append(plug);
             }
@@ -59,29 +58,39 @@ SnapBackend::SnapBackend(QObject *parent){
         m_snaps.append(new KCMSnap(snap, plugsForSnap, slotsForSnap));
     }
     //Print results
-    // for (const KCMSnap& snap : m_snaps) 
-    // {
-    //     qDebug() << snap.snap()->name();
-    // }
 }
+
 
 const QList<KCMSnap *> SnapBackend::snaps() const
 {
     return m_snaps;
 }
 
-void SnapBackend::connectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
+// const QList<KCMSnap *> SnapBackend::slotSnaps() const
+// {
+//     return m_slotSnaps;
+// }
+
+QString SnapBackend::connectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
 {
     QSnapdClient client;
     QSnapdConnectInterfaceRequest *req = client.connectInterface(plug_snap, plug_name, slot_snap, slot_name);
     req->runSync();
+    if (req->error() != QSnapdRequest::NoError) {
+        return req->errorString();
+    }
+    return QString();
 }
 
-void SnapBackend::disconnectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
+QString SnapBackend::disconnectPlug(const QString &plug_snap,const QString & plug_name, const QString &slot_snap, const QString &slot_name) const
 {
     QSnapdClient client;
     QSnapdDisconnectInterfaceRequest *req = client.disconnectInterface(plug_snap, plug_name, slot_snap, slot_name);
     req->runSync();
+    if (req->error() != QSnapdRequest::NoError) {
+        return req->errorString();
+    }
+    return QString();
 }
 
 bool SnapBackend::comparebyName(QSnapdSnap* a, QSnapdSnap* b) {
