@@ -18,6 +18,7 @@ SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
 {
     constexpr const char *uri = "org.kde.plasma.kcm.snappermissions";
     qmlRegisterType<SnapBackend>(uri, 1, 0, "SnapBackend");
+    setButtons(NoAdditionalButton);
 }
 
 #include "snappermissions.moc"
