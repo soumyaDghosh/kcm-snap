@@ -158,7 +158,7 @@ KCMUtils.ScrollViewKCM {
         Kirigami.FormLayout {
             QQC2.Label {
                 Kirigami.FormData.label: ""
-                text: "snapd error: " + output
+                text: i18n("snapd error: ") + output
                 textFormat: Text.StyledText
                 wrapMode: Text.Wrap
             }
