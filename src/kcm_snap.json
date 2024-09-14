@@ -8,7 +8,7 @@
             "tablet",
             "mediacenter"
         ],
-        "Icon": "snap-discover",
+        "Icon": "folder-snap-symbolic",
         "Name": "Snap Permissions",
         "Name[x-test]": "xxSnap Permissionsxx"
     },

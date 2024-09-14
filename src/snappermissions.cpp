@@ -10,7 +10,7 @@
 #include <Snapd/Snap>
 #include <Snapd/Slot>
 
-K_PLUGIN_CLASS_WITH_JSON(SnapPermissions, "snap_kcm.json")
+K_PLUGIN_CLASS_WITH_JSON(SnapPermissions, "kcm_snap.json")
 
 SnapPermissions::SnapPermissions(QObject *parent, const KPluginMetaData &data)
     : KQuickConfigModule{ parent, data }
