@@ -1,3 +1,8 @@
+/**
+ * SPDX-FileCopyrightText: 2024 Soumyadeep Ghosh <soumyadghosh@ubuntu.com>
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
 #pragma once
 #include <QList>
 #include <QPointer>

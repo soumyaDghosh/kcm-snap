@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Year Author <email@company.com>
+# SPDX-FileCopyrightText: 2024 Soumyadeep Ghosh <soumyadghosh@ubuntu.com>
 #
 # SPDX-License-Identifier: BSD-2-Clause
 
